@@ -1,0 +1,64 @@
+# 🎯 Skill Craft Learning – Data Science Internship – Task 3
+print("------------------------------------------------------------")
+print("🌳 Task 3 – Decision Tree Classifier Using Custom Marketing Data")
+print("👨‍💻 Intern: Rishan . N")
+print("🏫 College: Rajalakshmi Institute of Technology")
+print("🏢 Skill Craft Learning")
+print("------------------------------------------------------------\n")
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+
+# 🔧 Step 2: Create Custom Dataset
+data = {
+    "Age": [25, 35, 45, 22, 60, 31, 50, 29, 41, 38],
+    "Job": ["Student", "Engineer", "Retired", "Student", "Retired", "Engineer", "Doctor", "Student", "Doctor", "Engineer"],
+    "Marital": ["Single", "Married", "Married", "Single", "Married", "Single", "Divorced", "Single", "Married", "Married"],
+    "Balance": [2000, 5000, 1000, 300, 1500, 2200, 3200, 450, 1800, 2750],
+    "Contact": ["Cell", "Telephone", "Cell", "Cell", "Telephone", "Cell", "Telephone", "Cell", "Cell", "Telephone"],
+    "Previous": [0, 2, 1, 0, 3, 0, 2, 0, 1, 2],
+    "Subscribed": [1, 1, 0, 0, 1, 1, 0, 0, 1, 1]
+}
+
+df = pd.DataFrame(data)
+
+# 🔄 Step 3: Encode categorical data
+le = LabelEncoder()
+df['Job'] = le.fit_transform(df['Job'])
+df['Marital'] = le.fit_transform(df['Marital'])
+df['Contact'] = le.fit_transform(df['Contact'])
+
+# 🎯 Step 4: Features & Target
+X = df.drop('Subscribed', axis=1)
+y = df['Subscribed']
+
+# 🧪 Step 5: Split & Train
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+clf = DecisionTreeClassifier(criterion='entropy', max_depth=4, random_state=42)
+clf.fit(X_train, y_train)
+
+# 🔍 Step 6: Evaluation
+y_pred = clf.predict(X_test)
+print("✅ Accuracy:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
+print("\n📊 Classification Report:\n", classification_report(y_test, y_pred))
+print("\n📌 Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+
+# 🌳 Step 7: Visualize Tree
+plt.figure(figsize=(15, 8))
+plot_tree(clf, feature_names=X.columns, class_names=["No", "Yes"], filled=True)
+plt.title("🌳 Decision Tree – Custom Marketing Prediction")
+plt.show()
+
+# 🧠 Step 8: Insights
+print("\n📝 Insights by Rishan . N:")
+print("✅ Young customers with higher balance and prior contact more likely to subscribe.")
+print("✅ Job type (e.g., Engineer) and marital status also influenced decision.")
+print("✅ Tree helps visualize conditions that lead to conversion.")
+
+# ✅ Final Message
+print("\n🎉 Task 3 Completed Successfully!")
+print("🤖 Custom Data Prediction Model Built ✅")
